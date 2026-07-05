@@ -11,11 +11,22 @@ const contactSchema = z.object({
 });
 
 export async function POST(request: Request) {
+  // The chat kill-switch fallback form submits via fetch and wants a JSON
+  // reply instead of a redirect to /about (there's no such page in-modal).
+  const wantsJson = request.headers.get("accept")?.includes("application/json") ?? false;
   const form = await request.formData();
+
+  const respond = (ok: boolean) => {
+    if (wantsJson) return NextResponse.json({ ok });
+    return NextResponse.redirect(
+      new URL(`/about?sent=${ok ? "1" : "0"}#contact`, request.url),
+      303,
+    );
+  };
 
   // Honeypot: bots fill the hidden "website" field. Pretend success.
   if (typeof form.get("website") === "string" && form.get("website") !== "") {
-    return NextResponse.redirect(new URL("/about?sent=1#contact", request.url), 303);
+    return respond(true);
   }
 
   const parsed = contactSchema.safeParse({
@@ -25,15 +36,15 @@ export async function POST(request: Request) {
   });
 
   if (!parsed.success) {
-    return NextResponse.redirect(new URL("/about?sent=0#contact", request.url), 303);
+    return respond(false);
   }
 
   const { name, email, message } = parsed.data;
   const ok = await sendLeadEmail({
     subject: `Contact form: ${name}`,
-    text: `Source: contact form (/about)\nName: ${name}\nEmail: ${email}\n\n${message}`,
+    text: `Source: ${wantsJson ? "chat fallback form" : "contact form (/about)"}\nName: ${name}\nEmail: ${email}\n\n${message}`,
     replyTo: email,
   });
 
-  return NextResponse.redirect(new URL(`/about?sent=${ok ? "1" : "0"}#contact`, request.url), 303);
+  return respond(ok);
 }

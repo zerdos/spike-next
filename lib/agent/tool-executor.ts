@@ -14,7 +14,10 @@ export function createToolExecutor(env: Env, session: ChatSessionStub): ToolExec
       case "capture_lead": {
         const parsed = leadSchema.safeParse(input);
         if (!parsed.success) {
-          return { modelResult: "Invalid lead payload — ask the visitor to confirm their name and email, and that they consent to being contacted." };
+          return {
+            modelResult:
+              "Invalid lead payload — ask the visitor to confirm their name and email, and that they consent to being contacted.",
+          };
         }
         const lead = parsed.data;
         const encrypted = await encryptPII(env.PII_ENCRYPTION_KEY, lead);

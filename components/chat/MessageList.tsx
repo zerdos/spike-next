@@ -1,0 +1,71 @@
+import { useEffect, useRef } from "react";
+import { BookingCard } from "./BookingCard";
+import { LeadConsentCard } from "./LeadConsentCard";
+import type { ChatItem } from "./types";
+
+export function MessageList({ items }: { items: ChatItem[] }) {
+  const endRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ block: "end" });
+  }, []);
+
+  return (
+    <div
+      role="log"
+      aria-live="polite"
+      aria-relevant="additions text"
+      className="flex-1 space-y-3 overflow-y-auto px-4 py-3"
+    >
+      {items.map((item) => {
+        switch (item.kind) {
+          case "user":
+            return (
+              <p
+                key={item.id}
+                className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-neutral-900 px-4 py-2 text-sm text-white dark:bg-white dark:text-neutral-900"
+              >
+                {item.text}
+              </p>
+            );
+          case "assistant":
+            return (
+              <p
+                key={item.id}
+                className="max-w-[85%] rounded-2xl rounded-bl-sm border border-neutral-200 px-4 py-2 text-sm dark:border-neutral-800"
+              >
+                {item.text}
+                {item.text === "" ? <span className="sr-only">Spike is typing…</span> : null}
+              </p>
+            );
+          case "system":
+            return (
+              <p key={item.id} className="text-center text-xs text-neutral-500">
+                {item.text}
+              </p>
+            );
+          case "booking":
+            return <BookingCard key={item.id} url={item.url} />;
+          case "lead-confirmed":
+            return <LeadConsentCard key={item.id} />;
+          case "escalate":
+            return (
+              <div
+                key={item.id}
+                className="rounded-xl border border-neutral-300 p-3 text-sm dark:border-neutral-700"
+              >
+                This needs Zoltan directly.{" "}
+                <a href="/about#contact" className="underline underline-offset-4">
+                  Email us
+                </a>{" "}
+                or book a call.
+              </div>
+            );
+          default:
+            return null;
+        }
+      })}
+      <div ref={endRef} />
+    </div>
+  );
+}

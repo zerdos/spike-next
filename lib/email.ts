@@ -1,4 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare";
+import { env as getEnv } from "./cloudflare";
 
 type LeadEmail = {
   subject: string;
@@ -12,9 +12,9 @@ type LeadEmail = {
  * so callers can degrade gracefully.
  */
 export async function sendLeadEmail({ subject, text, replyTo }: LeadEmail): Promise<boolean> {
-  const { env } = getCloudflareContext();
-  const apiKey = (env as Record<string, unknown>).RESEND_API_KEY as string | undefined;
-  const to = (env as Record<string, unknown>).LEAD_NOTIFY_EMAIL as string | undefined;
+  const env = getEnv();
+  const apiKey = env.RESEND_API_KEY;
+  const to = env.LEAD_NOTIFY_EMAIL;
 
   if (!apiKey || !to) {
     console.warn("sendLeadEmail: RESEND_API_KEY or LEAD_NOTIFY_EMAIL not configured");

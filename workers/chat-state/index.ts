@@ -32,7 +32,10 @@ export class ChatSessionDO extends DurableObject {
     };
   }
 
-  async appendTurn(appended: StoredMessage[], usage: { input: number; output: number }): Promise<void> {
+  async appendTurn(
+    appended: StoredMessage[],
+    usage: { input: number; output: number },
+  ): Promise<void> {
     const state = await this.getState();
     if (state.messages.length === 0) {
       // First write: schedule transcript deletion at the retention limit.

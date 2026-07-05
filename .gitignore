@@ -51,3 +51,6 @@ lib/agent/kb.generated.ts
 # playwright
 /test-results/
 /playwright-report/
+
+# local secrets
+.dev.vars

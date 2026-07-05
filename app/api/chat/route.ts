@@ -42,7 +42,10 @@ export async function POST(request: Request) {
   const maxTokens = Number(e.MAX_SESSION_TOKENS);
   const maxMessages = Number(e.MAX_SESSION_MESSAGES);
   if (state.totalTokens >= maxTokens || state.messageCount >= maxMessages) {
-    return Response.json({ error: "session_limit_reached", fallback: "contact_form" }, { status: 429 });
+    return Response.json(
+      { error: "session_limit_reached", fallback: "contact_form" },
+      { status: 429 },
+    );
   }
 
   const stream = new ReadableStream<Uint8Array>({
