@@ -1,0 +1,21 @@
+{
+  "$schema": "../../node_modules/wrangler/config-schema.json",
+  "name": "spike-chat-state",
+  "main": "index.ts",
+  "compatibility_date": "2026-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "migrations": [
+    {
+      "tag": "v1",
+      "new_sqlite_classes": ["ChatSessionDO"]
+    }
+  ],
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "CHAT_SESSION",
+        "class_name": "ChatSessionDO"
+      }
+    ]
+  }
+}

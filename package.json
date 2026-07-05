@@ -6,13 +6,16 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "preview": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
-    "deploy": "opennextjs-cloudflare build && opennextjs-cloudflare deploy",
+    "preview": "npm run kb && opennextjs-cloudflare build && wrangler dev -c wrangler.jsonc -c workers/chat-state/wrangler.jsonc",
+    "deploy": "npm run kb && opennextjs-cloudflare build && opennextjs-cloudflare deploy",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit && tsc --noEmit -p workers/chat-state/tsconfig.json",
     "test": "vitest run",
-    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts"
+    "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
+    "kb": "node scripts/build-kb.ts",
+    "prebuild": "node scripts/build-kb.ts",
+    "pretypecheck": "node scripts/build-kb.ts"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.110.0",

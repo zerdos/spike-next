@@ -16,9 +16,17 @@
     "MAX_SESSION_MESSAGES": "30",
     "LEAD_NOTIFY_EMAIL": "zolika84@gmail.com",
     "CAL_LINK": "spike-land/discovery"
+  },
+  "durable_objects": {
+    "bindings": [
+      {
+        "name": "CHAT_SESSION",
+        "class_name": "ChatSessionDO",
+        "script_name": "spike-chat-state"
+      }
+    ]
   }
   // Secrets (set via `wrangler secret put`): ANTHROPIC_API_KEY, RESEND_API_KEY,
   // SESSION_SIGNING_SECRET, PII_ENCRYPTION_KEY. Optional var: LEAD_WEBHOOK_URL.
-  // P2 adds: durable object binding to workers/chat-state (script_name), rate limit
-  // binding, Analytics Engine dataset.
+  // P4 adds: rate limit binding, Analytics Engine dataset.
 }
