@@ -19,7 +19,28 @@ export const metadata: Metadata = {
     template: "%s · spike.land",
   },
   description:
-    "We design, ship, and embed agentic AI systems — helping companies orchestrate software, not operate it.",
+    "We design, ship, and embed agentic AI systems — helping companies orchestrate software, not operate it. AI transformation agency, Brighton / London, UK.",
+  keywords: [
+    "AI transformation agency UK",
+    "agentic AI consultancy",
+    "AI agent development agency",
+    "digital transformation AI Brighton",
+    "digital transformation AI London",
+  ],
+  openGraph: {
+    type: "website",
+    siteName: "spike.land",
+    title: "spike.land — Digital transformation for the agentic era",
+    description:
+      "We design, ship, and embed agentic AI systems — so your company orchestrates software instead of operating it.",
+    url: "https://spike.land",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "spike.land — Digital transformation for the agentic era",
+    description:
+      "We design, ship, and embed agentic AI systems — so your company orchestrates software instead of operating it.",
+  },
 };
 
 export default function RootLayout({

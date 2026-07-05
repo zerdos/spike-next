@@ -4,15 +4,15 @@ import legacyRedirects from "../config/legacy-redirects.json";
 type RedirectEntry = {
   source: string;
   destination: string;
-  permanent: boolean;
+  statusCode: number;
 };
 
 describe("legacy redirect table (FR-7)", () => {
   const entries = legacyRedirects as RedirectEntry[];
 
-  it("every entry is a permanent redirect to /", () => {
+  it("every entry is a 301 redirect to /", () => {
     for (const entry of entries) {
-      expect(entry.permanent).toBe(true);
+      expect(entry.statusCode).toBe(301);
       expect(entry.destination).toBe("/");
     }
   });

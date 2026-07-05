@@ -1,1 +1,342 @@
-[]
+[
+  {
+    "source": "/blog/:slug*",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/apps/:slug*",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/music/:slug*",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/learn/:slug*",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/create/:slug*",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/dashboard/:slug*",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/playground/:slug*",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/tool/:slug*",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/ai",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/arena",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/arendt",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/aristotle",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/arnold",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/bazdmeg",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/buddha",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/callback",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/camus",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/canvas",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/chat",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/chess",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/cockpit",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/confucius",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/cv",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/daftpunk",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/diogenes",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/einstein",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/erdos",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/erdos-token",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/gates",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/gp",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/hu2026",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/idd",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/jobs",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/kant",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/learnit",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/login",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/mcp",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/mine",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/moonshot",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/music-creator",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/musk",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/nietzsche",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/personas",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/peti",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/pixel",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/plato",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/pricing",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/qa",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/radix",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/raju",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/rubik-3",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/settings",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/simone",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/socrates",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/spike",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/spike-load",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/spinoza",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/status",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/stoic",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/suno",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/support",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/switchboard",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/tools",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/trump",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/vibe-code",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/wittgenstein",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/x-69",
+    "destination": "/",
+    "statusCode": 301
+  },
+  {
+    "source": "/zoltan",
+    "destination": "/",
+    "statusCode": 301
+  }
+]
