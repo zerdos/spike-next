@@ -45,3 +45,37 @@ against the eval suite in `evals/` before shipping.
 client (`ChatLauncher`/`ChatPanel`) renders `FallbackContactForm` instead. Flip it in the
 Cloudflare dashboard or via `wrangler.jsonc` + redeploy for an emergency disable with no code
 change.
+
+## Launch checklist (cutover from the current spike.land Astro site)
+
+This site replaces the existing Astro platform site at the spike.land apex. Nothing below has
+been done by this build — it's the sequence to follow when going live, in order:
+
+1. **Secrets**: `wrangler secret put` for `ANTHROPIC_API_KEY`, `RESEND_API_KEY`,
+   `SESSION_SIGNING_SECRET` (any long random string), `PII_ENCRYPTION_KEY` (32 random bytes,
+   base64 — e.g. `openssl rand -base64 32`). Never reuse the placeholder values from `.dev.vars`.
+2. **Cal.com**: confirm the `spike-land/discovery` event type exists and availability is
+   configured; update the `CAL_LINK` var in `wrangler.jsonc` if the slug differs.
+3. **Deploy**: `npm run deploy` (builds + `wrangler deploy`) to a `*.workers.dev` URL first;
+   smoke-test every route + the chat end-to-end there before touching DNS.
+4. **Eval gate**: run `npm run eval` (or trigger the `Agent Evals` GitHub Action manually) against
+   the deployed model/KB and confirm the hard gate (refusal/injection/handoff) passes 100% and the
+   soft gate (correctness/tone) clears 90% — this is the launch-blocking check from the PRD.
+5. **Lighthouse**: `npx lhci autorun` against the deployed URL (not just local) — confirm
+   perf ≥ 90 / a11y ≥ 95 / SEO ≥ 95 hold under real network conditions.
+6. **First-token latency**: from a UK vantage point, time 10 real chat turns against the deployed
+   worker; confirm p50 ≤ 1.5s (this is only meaningful against the real deployment, never `next dev`
+   or local `wrangler dev`).
+7. **DNS cutover**: point the `spike.land` apex at this Worker (Cloudflare custom domain), replacing
+   the current Astro site's routing. Do this only after steps 3–6 pass — it's a production DNS
+   change affecting live traffic and search rankings, not something to do speculatively.
+8. **Verify redirects live**: sample the same URLs `e2e/redirects.spec.ts` checks, against the real
+   domain, to confirm all ~68 legacy entries in `config/legacy-redirects.json` 301 correctly.
+9. **Search Console**: submit the new sitemap, monitor the redirected URLs for crawl errors over
+   the following week.
+10. **Retire the Astro site**: once traffic and search results confirm the cutover is clean, decommission
+    `packages/spike-web` in the old monorepo (or repurpose it at a `platform.spike.land` subdomain
+    per the PRD's open question on the MCP platform's future — a product decision, not this repo's).
+
+Steps 7 and 10 are irreversible-ish (DNS propagation, losing the old site's live traffic path) and
+should only be executed with explicit sign-off — this repo does not perform them automatically.

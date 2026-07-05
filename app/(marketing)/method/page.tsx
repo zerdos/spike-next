@@ -24,7 +24,9 @@ export default function MethodPage() {
           {methodPage.principles.map((principle, i) => (
             <li key={principle.name}>
               <h2 className="text-2xl font-semibold tracking-tight">
-                <span className="mr-3 text-neutral-400">{String(i + 1).padStart(2, "0")}</span>
+                <span className="mr-3 text-neutral-500 dark:text-neutral-400">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
                 {principle.name}
               </h2>
               <p className="mt-3 text-neutral-600 dark:text-neutral-400">{principle.body}</p>
