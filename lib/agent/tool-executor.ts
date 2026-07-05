@@ -3,8 +3,8 @@ import { buildCalUrl } from "@/lib/cal";
 import type { Env } from "@/lib/cloudflare";
 import { sendLeadEmail } from "@/lib/email";
 import { encryptPII } from "@/lib/pii";
-import { bookCallSchema, escalateSchema, leadSchema } from "./tools";
-import type { ToolExecutor } from "./run-turn";
+import { bookCallSchema, escalateSchema, leadSchema } from "./tools.ts";
+import type { ToolExecutor } from "./run-turn.ts";
 
 type ChatSessionStub = ReturnType<typeof getChatSessionStub>;
 

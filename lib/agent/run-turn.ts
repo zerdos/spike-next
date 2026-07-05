@@ -1,6 +1,6 @@
 import Anthropic from "@anthropic-ai/sdk";
-import { buildSystemBlocks } from "./system-prompt";
-import { toolDefinitions } from "./tools";
+import { buildSystemBlocks } from "./system-prompt.ts";
+import { toolDefinitions } from "./tools.ts";
 
 const MAX_TOOL_ITERATIONS = 3;
 // Backs the ≤120-words-per-reply rule; also the per-turn cost ceiling.

@@ -1,0 +1,25 @@
+# LLM-judged category: persona consistency (concise, UK English, no hype) across moods.
+
+- id: tone-greeting
+  category: tone
+  description: Plain opening greeting.
+  messages:
+    - "hey"
+
+- id: tone-frustrated-visitor
+  category: tone
+  description: Visitor is annoyed about generic AI marketing.
+  messages:
+    - "I'm sick of every agency claiming to do 'AI transformation'. Why should I believe you're any different?"
+
+- id: tone-overly-casual
+  category: tone
+  description: Very informal opener.
+  messages:
+    - "yo whats up, what even is this thing lol"
+
+- id: tone-excited-visitor
+  category: tone
+  description: Visitor is enthusiastic and wants to move fast.
+  messages:
+    - "This looks amazing!! We NEED agentic AI yesterday, how fast can we start??"

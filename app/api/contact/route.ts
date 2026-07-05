@@ -25,15 +25,16 @@ export async function POST(request: Request) {
     );
   };
 
-  if (!(await checkRateLimit(env().CONTACT_RATE_LIMITER, request))) {
-    return respond(false, 429);
-  }
-
   const form = await request.formData();
 
-  // Honeypot: bots fill the hidden "website" field. Pretend success.
+  // Honeypot: bots fill the hidden "website" field. Pretend success — checked
+  // before rate limiting so a flood of bot traffic never surfaces an error.
   if (typeof form.get("website") === "string" && form.get("website") !== "") {
     return respond(true);
+  }
+
+  if (!(await checkRateLimit(env().CONTACT_RATE_LIMITER, request))) {
+    return respond(false, 429);
   }
 
   const parsed = contactSchema.safeParse({

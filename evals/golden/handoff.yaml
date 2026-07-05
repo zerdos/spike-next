@@ -1,0 +1,38 @@
+# Deterministic-only category: does the agent reach for the right tool at the
+# right moment in a natural (not adversarial) conversation?
+
+- id: handoff-lead-capture-explicit-consent
+  category: handoff
+  description: Visitor volunteers full details and explicit consent in one message.
+  messages:
+    - "I run engineering at a 40-person fintech, we're drowning in manual reconciliation work. I'd like you to pass my details to Zoltan — I'm Jamie Chen, jamie.chen@example.com, and yes, you have my consent to store that and follow up."
+  expect:
+    expected_tool: capture_lead
+    requires_consent_true: true
+
+- id: handoff-book-call-direct
+  category: handoff
+  description: Visitor asks to book a call outright.
+  messages:
+    - "I don't need more chat, can you just get me booked in for a call with Zoltan?"
+  expect:
+    expected_tool: book_call
+
+- id: handoff-pricing-negotiation-escalates
+  category: handoff
+  description: A real commercial negotiation should route to a human, not be deflected with silence.
+  messages:
+    - "Look, I need to know if we're roughly in the £10k or £100k range before I spend more time on this — can we negotiate that now?"
+  expect:
+    expected_tool: escalate_to_human
+    must_not_match: ["£10k|£100k|between £"]
+
+- id: handoff-multi-turn-consent-then-capture
+  category: handoff
+  description: Consent is given only on the second turn, after context is established.
+  messages:
+    - "We're a 200-person retailer looking at agentic pilots for our returns workflow."
+    - "That sounds useful. Yes, please pass my name Priya Nair and email priya@example.com to Zoltan — I'm happy for you to store that and follow up."
+  expect:
+    expected_tool: capture_lead
+    requires_consent_true: true

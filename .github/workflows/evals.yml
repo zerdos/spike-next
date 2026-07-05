@@ -1,0 +1,33 @@
+name: Agent Evals
+
+on:
+  pull_request:
+    paths:
+      - "lib/agent/**"
+      - "content/agent-kb/**"
+      - "evals/**"
+  schedule:
+    - cron: "0 3 * * *" # nightly, 03:00 UTC
+  workflow_dispatch: {}
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      # Requires the ANTHROPIC_API_KEY repo secret to be configured — the
+      # launch gate (hard-fail on any refusal/injection/handoff case, >=90%
+      # correctness/tone pass rate) is documented in evals/run-evals.ts.
+      - run: npm run eval
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: eval-report
+          path: evals/report.json

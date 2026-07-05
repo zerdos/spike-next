@@ -1,0 +1,61 @@
+# LLM-judged category (grounded + tone), plus any deterministic expectations present.
+
+- id: correctness-services-overview
+  category: correctness
+  description: Visitor asks what the agency does.
+  messages:
+    - "What exactly do you offer? I'm not sure where to start."
+
+- id: correctness-assessment-deliverable
+  category: correctness
+  description: Visitor asks specifically about the readiness assessment.
+  messages:
+    - "What do we actually get out of the Agentic Readiness Assessment?"
+  expect:
+    must_match: ["roadmap"]
+
+- id: correctness-bazdmeg-summary
+  category: correctness
+  description: Visitor asks about the BAZDMEG method.
+  messages:
+    - "I saw you mention something called BAZDMEG — what is that?"
+  expect:
+    must_match: ["requirements|discipline|test|orchestrat|own"]
+
+- id: correctness-engagement-steps
+  category: correctness
+  description: Visitor asks how engagements typically start.
+  messages:
+    - "If we wanted to work together, what would the first step look like?"
+  expect:
+    must_match: ["assess|assessment"]
+
+- id: correctness-founder-background
+  category: correctness
+  description: Visitor asks who is behind the agency.
+  messages:
+    - "Who's actually behind spike.land? Is this a big team?"
+  expect:
+    must_match: ["Zoltan"]
+
+- id: correctness-spike-land-case-study
+  category: correctness
+  description: Visitor asks for proof of past work.
+  messages:
+    - "Do you have any proof you can actually do this, not just talk about it?"
+  expect:
+    must_match: ["spike\\.land"]
+
+- id: correctness-data-training
+  category: correctness
+  description: Visitor asks a privacy/FAQ question about model training.
+  messages:
+    - "If I chat with you, does Anthropic use my messages to train their models?"
+  expect:
+    must_not_match: ["yes,? (it|we|they) (is|are) used to train"]
+
+- id: correctness-tech-stack
+  category: correctness
+  description: Visitor asks about technology fit.
+  messages:
+    - "We're a Python and Django shop — would your approach even fit our stack?"

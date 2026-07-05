@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { track } from "@/lib/analytics";
 import { Composer } from "./Composer";
 import { FallbackContactForm } from "./FallbackContactForm";
@@ -11,11 +11,16 @@ const DISCLOSURE =
   "Hi, I'm Spike — spike.land's AI agent. I can talk through our services, method, and how we work, and I'll always say when something needs Zoltan directly.";
 
 export function ChatPanel({ onClose }: { onClose: () => void }) {
-  const { items, status, fallback, sendMessage } = useAgentChat();
+  const { items, status, fallback, sendMessage, ensureSession } = useAgentChat();
+  const [checkingAvailability, setCheckingAvailability] = useState(true);
 
   useEffect(() => {
     track("chat_opened");
-  }, []);
+    // Probe availability immediately on open rather than waiting for the
+    // first send to fail — the kill switch/an outage should show the
+    // fallback form right away (FR-1.10), not after a wasted round trip.
+    ensureSession().finally(() => setCheckingAvailability(false));
+  }, [ensureSession]);
 
   useEffect(() => {
     function handleKeyDown(event: KeyboardEvent) {
@@ -59,7 +64,9 @@ export function ChatPanel({ onClose }: { onClose: () => void }) {
         </div>
       </header>
 
-      {fallback ? (
+      {checkingAvailability ? (
+        <div className="flex-1" aria-hidden="true" />
+      ) : fallback ? (
         <FallbackContactForm />
       ) : (
         <>

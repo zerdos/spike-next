@@ -1,4 +1,4 @@
-import { knowledgeBase } from "./kb.generated";
+import { knowledgeBase } from "./kb.generated.ts";
 
 /**
  * The system prompt MUST be byte-stable across requests: prompt caching of the

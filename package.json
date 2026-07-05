@@ -15,7 +15,9 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv cloudflare-env.d.ts",
     "kb": "node scripts/build-kb.ts",
     "prebuild": "node scripts/build-kb.ts",
-    "pretypecheck": "node scripts/build-kb.ts"
+    "pretypecheck": "node scripts/build-kb.ts",
+    "eval": "node evals/run-evals.ts",
+    "test:e2e": "playwright test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.110.0",
@@ -28,6 +30,7 @@
   "devDependencies": {
     "@biomejs/biome": "^2.5.2",
     "@cloudflare/workers-types": "^4.20260702.1",
+    "@lhci/cli": "^0.15.1",
     "@opennextjs/cloudflare": "^1.20.1",
     "@playwright/test": "^1.61.1",
     "@tailwindcss/postcss": "^4",
@@ -37,6 +40,8 @@
     "tailwindcss": "^4",
     "typescript": "^5",
     "vitest": "^4.1.9",
-    "wrangler": "^4.107.0"
-  }
+    "wrangler": "^4.107.0",
+    "yaml": "^2.9.0"
+  },
+  "type": "module"
 }

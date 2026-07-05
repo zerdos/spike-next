@@ -146,5 +146,5 @@ export function useAgentChat() {
     [ensureSession],
   );
 
-  return { items, status, fallback, sendMessage };
+  return { items, status, fallback, sendMessage, ensureSession };
 }
