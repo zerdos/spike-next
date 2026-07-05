@@ -14,7 +14,14 @@ export function Footer() {
           </p>
           <p>{footer.location}</p>
         </div>
-        <nav aria-label="Footer" className="flex gap-6">
+        <nav aria-label="Footer" className="flex flex-wrap items-center gap-6">
+          <a
+            href={home.hero.secondaryCta.href}
+            data-cta="footer-book-call"
+            className="underline underline-offset-4"
+          >
+            Book a call
+          </a>
           <a href={footer.linkedin} rel="me noopener" target="_blank">
             LinkedIn
           </a>

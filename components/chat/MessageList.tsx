@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { home } from "@/content/copy/home";
 import { BookingCard } from "./BookingCard";
 import { LeadConsentCard } from "./LeadConsentCard";
 import type { ChatItem } from "./types";
@@ -52,13 +53,17 @@ export function MessageList({ items }: { items: ChatItem[] }) {
             return (
               <div
                 key={item.id}
-                className="rounded-xl border border-neutral-300 p-3 text-sm dark:border-neutral-700"
+                className="space-y-2 rounded-xl border border-neutral-300 p-3 text-sm dark:border-neutral-700"
               >
-                This needs Zoltan directly.{" "}
-                <a href="/about#contact" className="underline underline-offset-4">
-                  Email us
-                </a>{" "}
-                or book a call.
+                <p>This needs Zoltan directly.</p>
+                <div className="flex gap-4">
+                  <a href="/about#contact" className="underline underline-offset-4">
+                    Email us
+                  </a>
+                  <a href={home.hero.secondaryCta.href} className="underline underline-offset-4">
+                    Book a call
+                  </a>
+                </div>
               </div>
             );
           default:
