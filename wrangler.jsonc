@@ -1,0 +1,24 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "spike-digital",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-06-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": ".open-next/assets",
+    "binding": "ASSETS"
+  },
+  "vars": {
+    // Kill switch: "false" replaces the chat with the contact form (FR-1.8/FR-1.10).
+    "CHAT_ENABLED": "true",
+    "AGENT_MODEL": "claude-opus-4-8",
+    "MAX_SESSION_TOKENS": "50000",
+    "MAX_SESSION_MESSAGES": "30",
+    "LEAD_NOTIFY_EMAIL": "zolika84@gmail.com",
+    "CAL_LINK": "spike-land/discovery"
+  }
+  // Secrets (set via `wrangler secret put`): ANTHROPIC_API_KEY, RESEND_API_KEY,
+  // SESSION_SIGNING_SECRET, PII_ENCRYPTION_KEY. Optional var: LEAD_WEBHOOK_URL.
+  // P2 adds: durable object binding to workers/chat-state (script_name), rate limit
+  // binding, Analytics Engine dataset.
+}
