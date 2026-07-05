@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
+import { env } from "@/lib/cloudflare";
 import { sendLeadEmail } from "@/lib/email";
+import { checkRateLimit } from "@/lib/rate-limit";
 
 export const dynamic = "force-dynamic";
 
@@ -14,15 +16,20 @@ export async function POST(request: Request) {
   // The chat kill-switch fallback form submits via fetch and wants a JSON
   // reply instead of a redirect to /about (there's no such page in-modal).
   const wantsJson = request.headers.get("accept")?.includes("application/json") ?? false;
-  const form = await request.formData();
 
-  const respond = (ok: boolean) => {
-    if (wantsJson) return NextResponse.json({ ok });
+  const respond = (ok: boolean, status?: number) => {
+    if (wantsJson) return NextResponse.json({ ok }, status ? { status } : undefined);
     return NextResponse.redirect(
       new URL(`/about?sent=${ok ? "1" : "0"}#contact`, request.url),
       303,
     );
   };
+
+  if (!(await checkRateLimit(env().CONTACT_RATE_LIMITER, request))) {
+    return respond(false, 429);
+  }
+
+  const form = await request.formData();
 
   // Honeypot: bots fill the hidden "website" field. Pretend success.
   if (typeof form.get("website") === "string" && form.get("website") !== "") {

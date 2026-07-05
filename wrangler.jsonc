@@ -25,8 +25,14 @@
         "script_name": "spike-chat-state"
       }
     ]
-  }
+  },
+  // Per-IP rate limits (FR-1.8/FR-6). namespace_id values are arbitrary,
+  // locally-unique identifiers chosen by us, not remote resource ids.
+  "ratelimits": [
+    { "name": "CHAT_RATE_LIMITER", "namespace_id": "1001", "simple": { "limit": 20, "period": 60 } },
+    { "name": "CONTACT_RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
+  ],
+  "analytics_engine_datasets": [{ "binding": "FUNNEL_EVENTS", "dataset": "spike_digital_funnel" }]
   // Secrets (set via `wrangler secret put`): ANTHROPIC_API_KEY, RESEND_API_KEY,
   // SESSION_SIGNING_SECRET, PII_ENCRYPTION_KEY. Optional var: LEAD_WEBHOOK_URL.
-  // P4 adds: rate limit binding, Analytics Engine dataset.
 }

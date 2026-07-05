@@ -3,6 +3,7 @@ import { createToolExecutor } from "@/lib/agent/tool-executor";
 import { runAgentTurn } from "@/lib/agent/run-turn";
 import { getChatSessionStub } from "@/lib/chat-session-client";
 import { env, isChatEnabled } from "@/lib/cloudflare";
+import { checkRateLimit } from "@/lib/rate-limit";
 import { verifySession } from "@/lib/session";
 
 export const dynamic = "force-dynamic";
@@ -22,6 +23,10 @@ export async function POST(request: Request) {
 
   if (!isChatEnabled(e)) {
     return Response.json({ error: "chat_disabled", fallback: "contact_form" }, { status: 503 });
+  }
+
+  if (!(await checkRateLimit(e.CHAT_RATE_LIMITER, request))) {
+    return Response.json({ error: "rate_limited" }, { status: 429 });
   }
 
   const json = await request.json().catch(() => null);
@@ -77,6 +82,11 @@ export async function POST(request: Request) {
 
         const result = next.value;
         await session.appendTurn(result.appended as never[], result.usage);
+        e.FUNNEL_EVENTS?.writeDataPoint({
+          blobs: ["chat_turn"],
+          doubles: [result.usage.input, result.usage.output],
+          indexes: [sessionId],
+        });
       } catch (error) {
         console.error("chat turn failed", error);
         controller.enqueue(

@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# spike.land
 
-## Getting Started
+AI-native digital agency landing site. Next.js 16 (App Router) on Cloudflare Workers via
+`@opennextjs/cloudflare`. See `AGENTS.md` for hard rules and layout, and
+`~/.claude/plans/prd-spike-land-scalable-perlis.md` for the full build plan.
 
-First, run the development server:
+## Commands
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm run dev       # next dev — UI-only, no Cloudflare bindings
+npm run preview   # kb + OpenNext build + multi-worker wrangler dev (main + chat-state DO)
+                   # — the target for anything touching bindings/streaming
+npm run lint      # biome check
+npm run typecheck # tsc, root + workers/chat-state
+npm run test      # vitest
+npm run deploy    # kb + OpenNext build + wrangler deploy
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Local secrets go in `.dev.vars` (gitignored): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`,
+`SESSION_SIGNING_SECRET`, `PII_ENCRYPTION_KEY` (base64 AES-256 key). In production these are
+set with `wrangler secret put <NAME>`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Cost guardrails
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The agent chat calls the Anthropic API on every turn. Three layers keep spend bounded:
 
-## Learn More
+1. **Per-session ceilings** (`wrangler.jsonc` vars `MAX_SESSION_TOKENS`, `MAX_SESSION_MESSAGES`,
+   enforced in `app/api/chat/route.ts`): once a session's cumulative tokens or message count hits
+   the limit, `/api/chat` returns 429 and the client falls back to the contact form.
+2. **Per-IP rate limits** (`CHAT_RATE_LIMITER` / `CONTACT_RATE_LIMITER` bindings, 20 and 5
+   requests/minute respectively, `lib/rate-limit.ts`): bounds request volume before any LLM call
+   happens. If the binding is ever unavailable, `checkRateLimit` fails open and a Cloudflare WAF
+   rate-limiting rule on the zone is the documented fallback.
+3. **Org-level spend alerts**: set a monthly spend cap and 50/80/100% alerts in the Anthropic
+   Console. This is the backstop layer and must be configured manually (no API for it) before
+   launch.
 
-To learn more about Next.js, take a look at the following resources:
+`AGENT_MODEL` (default `claude-opus-4-8`) is a single env var — switching to a cheaper/faster
+model (e.g. `claude-haiku-4-5`) needs no code change, only a redeploy, and should be re-validated
+against the eval suite in `evals/` before shipping.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Kill switch
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`CHAT_ENABLED=false` (env var) makes `/api/chat` and `/api/chat/session` return 503, and the
+client (`ChatLauncher`/`ChatPanel`) renders `FallbackContactForm` instead. Flip it in the
+Cloudflare dashboard or via `wrangler.jsonc` + redeploy for an emergency disable with no code
+change.

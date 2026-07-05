@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+import { AnalyticsObserver } from "@/components/analytics/AnalyticsObserver";
 import { ChatLauncher } from "@/components/chat/ChatLauncher";
 import "./globals.css";
 
@@ -54,6 +55,7 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col">
         {children}
         <ChatLauncher />
+        <AnalyticsObserver />
       </body>
     </html>
   );
