@@ -13,7 +13,9 @@ npm run preview   # kb + OpenNext build + multi-worker wrangler dev (main + chat
 npm run lint      # biome check
 npm run typecheck # tsc, root + workers/chat-state
 npm run test      # vitest
-npm run deploy    # kb + OpenNext build + wrangler deploy
+npm run deploy    # kb + OpenNext build + deploy chat-state THEN the main worker (order matters:
+                   # the main worker's cross-script Durable Object binding needs spike-chat-state
+                   # to already exist on the account)
 ```
 
 Local secrets go in `.dev.vars` (gitignored): `ANTHROPIC_API_KEY`, `RESEND_API_KEY`,
@@ -56,8 +58,11 @@ been done by this build — it's the sequence to follow when going live, in orde
    base64 — e.g. `openssl rand -base64 32`). Never reuse the placeholder values from `.dev.vars`.
 2. **Cal.com**: confirm the `spike-land/discovery` event type exists and availability is
    configured; update the `CAL_LINK` var in `wrangler.jsonc` if the slug differs.
-3. **Deploy**: `npm run deploy` (builds + `wrangler deploy`) to a `*.workers.dev` URL first;
-   smoke-test every route + the chat end-to-end there before touching DNS.
+3. **Deploy**: `npm run deploy` deploys both workers (`spike-chat-state` first, then `spike-digital`)
+   to their `*.workers.dev` URLs; smoke-test every route + the chat end-to-end there before touching
+   DNS. Verify with `wrangler secret list --name spike-digital` that step 1's secrets actually landed
+   before expecting the chat to work — a fresh deploy with no secrets set will 500 on
+   `/api/chat/session`, which is expected until step 1 is done.
 4. **Eval gate**: run `npm run eval` (or trigger the `Agent Evals` GitHub Action manually) against
    the deployed model/KB and confirm the hard gate (refusal/injection/handoff) passes 100% and the
    soft gate (correctness/tone) clears 90% — this is the launch-blocking check from the PRD.
