@@ -7,11 +7,11 @@
  * is a hard failure. correctness/tone cases additionally go through an
  * LLM judge and must clear a 90% pass rate.
  *
- * Usage: ANTHROPIC_API_KEY=... node evals/run-evals.ts
+ * Usage: GEMINI_API_KEY=... node evals/run-evals.ts
  */
 import { readFileSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import type Anthropic from "@anthropic-ai/sdk";
+import type { Content } from "@google/genai";
 import { parse } from "yaml";
 import { isDeterministicOnlyCategory, runDeterministicChecks } from "./checks.ts";
 import { createDryToolExecutor } from "./dry-tool-executor.ts";
@@ -34,7 +34,7 @@ function loadCases(): GoldenCase[] {
 }
 
 async function runCase(apiKey: string, model: string, goldenCase: GoldenCase): Promise<CaseResult> {
-  const history: Anthropic.MessageParam[] = [];
+  const history: Content[] = [];
   const toolCalls: RecordedToolCall[] = [];
   let finalText = "";
 
@@ -72,10 +72,10 @@ async function runCase(apiKey: string, model: string, goldenCase: GoldenCase): P
 }
 
 async function main() {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-  const model = process.env.AGENT_MODEL ?? "claude-opus-4-8";
+  const apiKey = process.env.GEMINI_API_KEY;
+  const model = process.env.AGENT_MODEL ?? "gemini-2.5-flash";
   if (!apiKey) {
-    console.error("ANTHROPIC_API_KEY is required to run evals.");
+    console.error("GEMINI_API_KEY is required to run evals.");
     process.exit(1);
   }
 

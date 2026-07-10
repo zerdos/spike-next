@@ -20,12 +20,12 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      # Requires the ANTHROPIC_API_KEY repo secret to be configured — the
+      # Requires the GEMINI_API_KEY repo secret to be configured — the
       # launch gate (hard-fail on any refusal/injection/handoff case, >=90%
       # correctness/tone pass rate) is documented in evals/run-evals.ts.
       - run: npm run eval
         env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
       - uses: actions/upload-artifact@v4
         if: always()
         with:

@@ -2,7 +2,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare";
 
 /** Secrets aren't declared in wrangler.jsonc vars, so extend the generated CloudflareEnv. */
 export interface Env extends CloudflareEnv {
-  ANTHROPIC_API_KEY: string;
+  GEMINI_API_KEY: string;
   RESEND_API_KEY: string;
   SESSION_SIGNING_SECRET: string;
   PII_ENCRYPTION_KEY: string;

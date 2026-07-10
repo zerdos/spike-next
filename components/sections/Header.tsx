@@ -5,23 +5,25 @@ import { Container } from "@/components/ui/Container";
 
 export function Header() {
   return (
-    <header className="border-b border-neutral-200 py-4 dark:border-neutral-800">
+    <header className="sticky top-0 z-40 border-b border-edge bg-surface-overlay py-4 backdrop-blur-md">
       <Container className="flex items-center justify-between">
         <Link href="/" className="font-semibold tracking-tight">
           spike.land
         </Link>
         <nav aria-label="Main" className="flex items-center gap-6 text-sm">
-          <Link href="/method" className="hover:underline underline-offset-4">
+          <Link
+            href="/method"
+            className="text-ink-muted motion-safe:transition-colors hover:text-ink"
+          >
             Method
           </Link>
-          <Link href="/about" className="hover:underline underline-offset-4">
+          <Link
+            href="/about"
+            className="text-ink-muted motion-safe:transition-colors hover:text-ink"
+          >
             About
           </Link>
-          <ButtonLink
-            href={home.hero.secondaryCta.href}
-            className="!px-4 !py-2"
-            data-cta="nav-book-call"
-          >
+          <ButtonLink href={home.hero.secondaryCta.href} size="sm" data-cta="nav-book-call">
             Book a call
           </ButtonLink>
         </nav>

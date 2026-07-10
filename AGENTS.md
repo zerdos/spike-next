@@ -22,7 +22,7 @@ Full spec: PRD + approved plan in `~/.claude/plans/prd-spike-land-scalable-perli
 - Never `export const runtime = "edge"` (OpenNext runs Next's Node runtime in workerd).
 - Bindings via `getCloudflareContext()` from `@opennextjs/cloudflare`; `process.env` is build-time only. No runtime `fs` — the agent KB is compiled by `scripts/build-kb.ts` into `lib/agent/kb.generated.ts` (gitignored).
 - Redirects live in `config/legacy-redirects.json` (imported by `next.config.ts`); all destinations `/`, all permanent. Never add a root catch-all.
-- Chat: SSE from `/api/chat` (`force-dynamic`, return ReadableStream without awaiting completion). System prompt must be byte-stable (prompt caching is load-bearing for the ≤1.5s first-token NFR); nothing volatile in it. No `thinking` param.
+- Chat: SSE from `/api/chat` (`force-dynamic`, return ReadableStream without awaiting completion). System prompt must be byte-stable (Gemini applies implicit caching automatically to a stable prompt prefix, which is load-bearing for the ≤1.5s first-token NFR); nothing volatile in it.
 - Agent may only state facts present in `content/agent-kb/*.md`. Never prices, guarantees, client names outside KB. Tool inputs are zod-validated server-side regardless of what the model sends.
 - PII (name/email) is AES-GCM encrypted before storage; no PII in URLs or analytics events.
 - Images: pre-sized AVIF/WebP + plain `<img>` with explicit width/height (no next/image optimizer on Workers).

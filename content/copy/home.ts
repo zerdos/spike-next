@@ -168,7 +168,7 @@ export const home: HomeCopy = {
   },
 
   footer: {
-    email: "hello@spike.land",
+    email: "zoltan.erdos@me.com",
     linkedin: "https://www.linkedin.com/in/zoltanerdos/",
     github: "https://github.com/zerdos",
     location: "Brighton / London, UK — serving UK & remote",

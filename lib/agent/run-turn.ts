@@ -1,5 +1,5 @@
-import Anthropic from "@anthropic-ai/sdk";
-import { buildSystemBlocks } from "./system-prompt.ts";
+import { GoogleGenAI, type Content, type Part } from "@google/genai";
+import { buildSystemInstruction } from "./system-prompt.ts";
 import { toolDefinitions } from "./tools.ts";
 
 const MAX_TOOL_ITERATIONS = 3;
@@ -16,7 +16,7 @@ export type ToolExecutor = (
   name: string,
   input: unknown,
 ) => Promise<{
-  /** Sent back to the model as the tool_result. */
+  /** Sent back to the model as the functionResponse. */
   modelResult: string;
   /** Rendered by the chat client (e.g. a booking card). */
   clientData?: unknown;
@@ -24,9 +24,23 @@ export type ToolExecutor = (
 
 export type TurnResult = {
   /** Messages to append to the stored transcript (user turn included). */
-  appended: Anthropic.MessageParam[];
+  appended: Content[];
   usage: { input: number; output: number };
 };
+
+/** Merges consecutive text parts so stored history doesn't fragment into many single-word parts. */
+function mergeTextParts(parts: Part[]): Part[] {
+  const merged: Part[] = [];
+  for (const part of parts) {
+    const prev = merged[merged.length - 1];
+    if (part.text !== undefined && prev?.text !== undefined) {
+      prev.text += part.text;
+    } else {
+      merged.push({ ...part });
+    }
+  }
+  return merged;
+}
 
 /**
  * Runs one visitor turn: streams model output, executes tool calls (max 3
@@ -36,57 +50,75 @@ export type TurnResult = {
 export async function* runAgentTurn(params: {
   apiKey: string;
   model: string;
-  history: Anthropic.MessageParam[];
+  history: Content[];
   userMessage: string;
   executeTool: ToolExecutor;
 }): AsyncGenerator<AgentEvent, TurnResult> {
-  const client = new Anthropic({ apiKey: params.apiKey });
+  const client = new GoogleGenAI({ apiKey: params.apiKey });
   const usage = { input: 0, output: 0 };
 
-  const userTurn: Anthropic.MessageParam = { role: "user", content: params.userMessage };
-  const appended: Anthropic.MessageParam[] = [userTurn];
-  const messages: Anthropic.MessageParam[] = [...params.history, userTurn];
+  const userTurn: Content = { role: "user", parts: [{ text: params.userMessage }] };
+  const appended: Content[] = [userTurn];
+  const messages: Content[] = [...params.history, userTurn];
 
   for (let iteration = 0; iteration < MAX_TOOL_ITERATIONS; iteration++) {
-    const stream = client.messages.stream({
+    const stream = await client.models.generateContentStream({
       model: params.model,
-      max_tokens: MAX_OUTPUT_TOKENS,
-      system: buildSystemBlocks(),
-      tools: toolDefinitions,
-      messages,
+      contents: messages,
+      config: {
+        systemInstruction: buildSystemInstruction(),
+        tools: [{ functionDeclarations: toolDefinitions }],
+        maxOutputTokens: MAX_OUTPUT_TOKENS,
+      },
     });
 
-    for await (const event of stream) {
-      if (event.type === "content_block_delta" && event.delta.type === "text_delta") {
-        yield { type: "token", text: event.delta.text };
+    const accumulatedParts: Part[] = [];
+    // usageMetadata on each chunk is cumulative for the call, not a delta —
+    // keep only the latest one and apply it once after the loop.
+    let usageThisCall: { input: number; output: number } | undefined;
+    for await (const chunk of stream) {
+      const candidateParts = chunk.candidates?.[0]?.content?.parts ?? [];
+      for (const part of candidateParts) {
+        if (part.text) {
+          yield { type: "token", text: part.text };
+        }
+        accumulatedParts.push(part);
+      }
+      if (chunk.usageMetadata) {
+        usageThisCall = {
+          input: chunk.usageMetadata.promptTokenCount ?? 0,
+          output: chunk.usageMetadata.candidatesTokenCount ?? 0,
+        };
       }
     }
+    usage.input += usageThisCall?.input ?? 0;
+    usage.output += usageThisCall?.output ?? 0;
 
-    const final = await stream.finalMessage();
-    usage.input += final.usage.input_tokens;
-    usage.output += final.usage.output_tokens;
-
-    const assistantTurn: Anthropic.MessageParam = { role: "assistant", content: final.content };
+    const assistantTurn: Content = { role: "model", parts: mergeTextParts(accumulatedParts) };
     messages.push(assistantTurn);
     appended.push(assistantTurn);
 
-    if (final.stop_reason !== "tool_use") break;
+    const functionCalls = accumulatedParts.filter((part) => part.functionCall !== undefined);
+    if (functionCalls.length === 0) break;
 
-    const toolUses = final.content.filter(
-      (block): block is Anthropic.ToolUseBlock => block.type === "tool_use",
-    );
-    const results: Anthropic.ToolResultBlockParam[] = [];
-    for (const toolUse of toolUses) {
-      const { modelResult, clientData } = await params.executeTool(toolUse.name, toolUse.input);
-      yield { type: "tool", name: toolUse.name, data: clientData ?? null };
-      results.push({
-        type: "tool_result",
-        tool_use_id: toolUse.id,
-        content: modelResult,
+    const responseParts: Part[] = [];
+    for (const { functionCall } of functionCalls) {
+      if (!functionCall) continue;
+      const { modelResult, clientData } = await params.executeTool(
+        functionCall.name ?? "",
+        functionCall.args ?? {},
+      );
+      yield { type: "tool", name: functionCall.name ?? "", data: clientData ?? null };
+      responseParts.push({
+        functionResponse: {
+          id: functionCall.id,
+          name: functionCall.name,
+          response: { output: modelResult },
+        },
       });
     }
 
-    const resultTurn: Anthropic.MessageParam = { role: "user", content: results };
+    const resultTurn: Content = { role: "user", parts: responseParts };
     messages.push(resultTurn);
     appended.push(resultTurn);
   }

@@ -1,4 +1,4 @@
-import type Anthropic from "@anthropic-ai/sdk";
+import { Type, type FunctionDeclaration } from "@google/genai";
 import { z } from "zod";
 
 export const leadSchema = z.object({
@@ -23,54 +23,54 @@ export const escalateSchema = z.object({
   reason: z.string().trim().min(1).max(500),
 });
 
-export const toolDefinitions: Anthropic.Tool[] = [
+export const toolDefinitions: FunctionDeclaration[] = [
   {
     name: "capture_lead",
     description:
       "Store the visitor's contact details and qualification summary so Zoltan can follow up. Call ONLY after the visitor has explicitly agreed to share their details for follow-up. consent must be true.",
-    input_schema: {
-      type: "object",
+    parameters: {
+      type: Type.OBJECT,
       properties: {
-        name: { type: "string", description: "Visitor's name" },
-        email: { type: "string", description: "Visitor's email address" },
-        company: { type: "string", description: "Company name if shared" },
-        role: { type: "string", description: "Visitor's role if shared" },
-        problem_area: { type: "string", description: "The business problem discussed" },
-        ai_usage: { type: "string", description: "Current AI usage described by the visitor" },
-        timeline: { type: "string", description: "Timeline if shared" },
+        name: { type: Type.STRING, description: "Visitor's name" },
+        email: { type: Type.STRING, description: "Visitor's email address" },
+        company: { type: Type.STRING, description: "Company name if shared" },
+        role: { type: Type.STRING, description: "Visitor's role if shared" },
+        problem_area: { type: Type.STRING, description: "The business problem discussed" },
+        ai_usage: {
+          type: Type.STRING,
+          description: "Current AI usage described by the visitor",
+        },
+        timeline: { type: Type.STRING, description: "Timeline if shared" },
         consent: {
-          type: "boolean",
+          type: Type.BOOLEAN,
           description: "True only if the visitor explicitly agreed to be contacted",
         },
       },
       required: ["name", "email", "consent"],
-      additionalProperties: false,
     },
   },
   {
     name: "book_call",
     description:
       "Offer the visitor a discovery-call booking link with Zoltan. Include name/email prefill ONLY if the visitor already shared them in this conversation and agreed to booking.",
-    input_schema: {
-      type: "object",
+    parameters: {
+      type: Type.OBJECT,
       properties: {
-        name: { type: "string", description: "Name to prefill, if consented" },
-        email: { type: "string", description: "Email to prefill, if consented" },
+        name: { type: Type.STRING, description: "Name to prefill, if consented" },
+        email: { type: Type.STRING, description: "Email to prefill, if consented" },
       },
-      additionalProperties: false,
     },
   },
   {
     name: "escalate_to_human",
     description:
       "Hand the visitor to a human. Use for pricing negotiation, legal or contract questions, complaints, or anything outside the knowledge base. Surfaces email and booking options to the visitor.",
-    input_schema: {
-      type: "object",
+    parameters: {
+      type: Type.OBJECT,
       properties: {
-        reason: { type: "string", description: "Why escalation is needed (short)" },
+        reason: { type: Type.STRING, description: "Why escalation is needed (short)" },
       },
       required: ["reason"],
-      additionalProperties: false,
     },
   },
 ];

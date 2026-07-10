@@ -24,7 +24,7 @@ export function MessageList({ items }: { items: ChatItem[] }) {
             return (
               <p
                 key={item.id}
-                className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-neutral-900 px-4 py-2 text-sm text-white dark:bg-white dark:text-neutral-900"
+                className="ml-auto max-w-[85%] rounded-2xl rounded-br-sm bg-linear-to-r from-accent-bright to-cyan px-4 py-2 text-sm font-medium text-on-accent"
               >
                 {item.text}
               </p>
@@ -33,7 +33,7 @@ export function MessageList({ items }: { items: ChatItem[] }) {
             return (
               <p
                 key={item.id}
-                className="max-w-[85%] rounded-2xl rounded-bl-sm border border-neutral-200 px-4 py-2 text-sm dark:border-neutral-800"
+                className="max-w-[85%] rounded-2xl rounded-bl-sm border border-edge bg-surface-raised px-4 py-2 text-sm"
               >
                 {item.text}
                 {item.text === "" ? <span className="sr-only">Spike is typing…</span> : null}
@@ -41,7 +41,7 @@ export function MessageList({ items }: { items: ChatItem[] }) {
             );
           case "system":
             return (
-              <p key={item.id} className="text-center text-xs text-neutral-500">
+              <p key={item.id} className="text-center text-xs text-ink-muted">
                 {item.text}
               </p>
             );
@@ -53,7 +53,7 @@ export function MessageList({ items }: { items: ChatItem[] }) {
             return (
               <div
                 key={item.id}
-                className="space-y-2 rounded-xl border border-neutral-300 p-3 text-sm dark:border-neutral-700"
+                className="space-y-2 rounded-xl border border-edge-strong bg-surface-raised p-3 text-sm"
               >
                 <p>This needs Zoltan directly.</p>
                 <div className="flex gap-4">

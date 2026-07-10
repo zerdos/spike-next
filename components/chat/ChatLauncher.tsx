@@ -34,7 +34,7 @@ export function ChatLauncher() {
           type="button"
           onClick={() => setOpen(true)}
           aria-label="Open chat with Spike, our AI agent"
-          className="fixed bottom-6 right-6 z-50 rounded-full bg-neutral-900 px-5 py-3 text-sm font-medium text-white shadow-lg motion-safe:transition-transform motion-safe:hover:scale-105 dark:bg-white dark:text-neutral-900"
+          className="fixed bottom-6 right-6 z-50 rounded-full bg-linear-to-r from-accent-bright to-cyan px-5 py-3 text-sm font-semibold text-on-accent shadow-glow motion-safe:transition-transform motion-safe:hover:scale-105"
         >
           Chat with Spike
         </button>

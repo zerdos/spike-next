@@ -20,7 +20,7 @@ const sections: { heading: string; body: string[] }[] = [
     heading: "The agent chat",
     body: [
       "The chat on this site is powered by an AI agent, and it is clearly labelled as such. When you use it, your messages are processed to generate responses and — only with your explicit consent — to capture your contact details so we can follow up.",
-      "Chat messages are sent to Anthropic (our AI model provider and sub-processor) to generate responses. Anthropic processes this data on our instructions and does not use it to train models.",
+      "Chat messages are sent to Google (our AI model provider and sub-processor, via the Gemini API) to generate responses. Google processes this data on our instructions and does not use it to train models.",
       "Chat transcripts are stored for up to 90 days and then deleted automatically. Contact details you consent to share (name, email) are encrypted at rest and used solely to respond to your enquiry.",
     ],
   },
@@ -53,15 +53,12 @@ export default function PrivacyPage() {
     <Container className="py-16 sm:py-24">
       <article className="prose-neutral max-w-3xl">
         <h1 className="text-4xl font-semibold tracking-tight">Privacy policy</h1>
-        <p className="mt-4 text-sm text-neutral-500">Last updated: 5 July 2026</p>
+        <p className="mt-4 text-sm text-ink-muted">Last updated: 5 July 2026</p>
         {sections.map((section) => (
           <section key={section.heading} className="mt-10">
             <h2 className="text-2xl font-semibold tracking-tight">{section.heading}</h2>
             {section.body.map((paragraph) => (
-              <p
-                key={paragraph.slice(0, 32)}
-                className="mt-3 text-neutral-600 dark:text-neutral-400"
-              >
+              <p key={paragraph.slice(0, 32)} className="mt-3 text-ink-muted">
                 {paragraph}
               </p>
             ))}

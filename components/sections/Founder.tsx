@@ -12,20 +12,20 @@ export function Founder() {
           width={founder.image.width}
           height={founder.image.height}
           loading="lazy"
-          className="h-40 w-40 rounded-2xl object-cover"
+          className="h-40 w-40 rounded-2xl object-cover ring-1 ring-edge shadow-glow-sm"
         />
         <div className="max-w-xl">
           <h2 className="text-2xl font-semibold tracking-tight">{founder.name}</h2>
-          <p className="text-sm text-neutral-500">{founder.title}</p>
-          <p className="mt-4 text-neutral-600 dark:text-neutral-400">{founder.bio}</p>
-          <ul className="mt-4 space-y-1 text-sm text-neutral-600 dark:text-neutral-400">
+          <p className="text-sm text-ink-muted">{founder.title}</p>
+          <p className="mt-4 text-ink-muted">{founder.bio}</p>
+          <ul className="mt-4 space-y-1 text-sm text-ink-muted">
             {founder.markers.map((marker) => (
               <li key={marker}>· {marker}</li>
             ))}
           </ul>
           <a
             href={founder.link.href}
-            className="mt-4 inline-block text-sm font-medium underline underline-offset-4"
+            className="mt-4 inline-block text-sm font-medium text-accent-text underline underline-offset-4 motion-safe:transition-colors hover:text-ink"
           >
             {founder.link.label} →
           </a>

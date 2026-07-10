@@ -40,15 +40,12 @@ export default function TermsPage() {
     <Container className="py-16 sm:py-24">
       <article className="max-w-3xl">
         <h1 className="text-4xl font-semibold tracking-tight">Terms of use</h1>
-        <p className="mt-4 text-sm text-neutral-500">Last updated: 5 July 2026</p>
+        <p className="mt-4 text-sm text-ink-muted">Last updated: 5 July 2026</p>
         {sections.map((section) => (
           <section key={section.heading} className="mt-10">
             <h2 className="text-2xl font-semibold tracking-tight">{section.heading}</h2>
             {section.body.map((paragraph) => (
-              <p
-                key={paragraph.slice(0, 32)}
-                className="mt-3 text-neutral-600 dark:text-neutral-400"
-              >
+              <p key={paragraph.slice(0, 32)} className="mt-3 text-ink-muted">
                 {paragraph}
               </p>
             ))}

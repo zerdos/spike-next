@@ -1,26 +1,139 @@
 @import "tailwindcss";
 
+/*
+ * Design tokens — dark-first "electric on dark".
+ * :root holds dark values; light mode is the media-query override.
+ * Components reference only the semantic utilities mapped in @theme below —
+ * never raw palette values and never `dark:` variants.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: dark;
+
+  /* surfaces */
+  --surface: #0a0a12;
+  --surface-raised: #12121d;
+  --surface-overlay: rgb(10 10 18 / 0.8);
+
+  /* text */
+  --ink: #f4f2ee;
+  --ink-muted: #a9a6b4;
+  --ink-faint: #77748a; /* decorative labels only — below AA for body text */
+
+  /* borders */
+  --edge: rgb(255 255 255 / 0.1);
+  --edge-strong: rgb(255 255 255 / 0.18);
+
+  /* accent */
+  --accent: #7c5cff; /* decorative strokes/glows only — not legible as text */
+  --accent-bright: #8b6dff; /* gradient start on filled controls */
+  --cyan: #22d3ee; /* gradient end */
+  --accent-text: #a78bfa; /* violet that passes AA as text on --surface */
+  --on-accent: #0a0a12; /* constant: dark ink on gradient fills in BOTH modes */
+  --glow: rgb(124 92 255 / 0.35);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: light) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    color-scheme: light;
+    --surface: #ffffff;
+    --surface-raised: #f7f7fa;
+    --surface-overlay: rgb(255 255 255 / 0.8);
+    --ink: #14121f;
+    --ink-muted: #55516b;
+    --ink-faint: #8b88a0;
+    --edge: rgb(20 18 31 / 0.1);
+    --edge-strong: rgb(20 18 31 / 0.2);
+    --accent-text: #6d4ae0;
+    --glow: rgb(124 92 255 / 0.25);
   }
 }
 
+@theme inline {
+  --color-surface: var(--surface);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-edge: var(--edge);
+  --color-edge-strong: var(--edge-strong);
+  --color-accent: var(--accent);
+  --color-accent-bright: var(--accent-bright);
+  --color-accent-text: var(--accent-text);
+  --color-cyan: var(--cyan);
+  --color-on-accent: var(--on-accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+  --shadow-glow: 0 0 0 1px rgb(124 92 255 / 0.25), 0 8px 40px -12px var(--glow);
+  --shadow-glow-sm: 0 4px 24px -8px var(--glow);
+}
+
+html {
+  /* Sticky header: keep #get-started / #contact anchors from landing under it. */
+  scroll-padding-top: 5rem;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--accent);
+  color: #f4f2ee;
+}
+
+/*
+ * Motion system — pure CSS, no client JS.
+ * Rule: `opacity: 0` may only appear inside a reduced-motion guard (and, for
+ * scroll-driven reveal, an @supports guard), so content is never hidden for
+ * reduced-motion users or browsers without animation-timeline support.
+ */
+@keyframes rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes blob-drift {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(4rem, -2rem) scale(1.15);
+  }
+}
+
+@utility reveal {
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      animation: rise-in linear both;
+      animation-timeline: view();
+      /* Fully opaque once fully in view — keeps toBeVisible()/clicks stable. */
+      animation-range: entry 10% entry 60%;
+    }
+  }
+}
+
+@utility stagger {
+  @media (prefers-reduced-motion: no-preference) {
+    > * {
+      animation: rise-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+    > :nth-child(2) {
+      animation-delay: 100ms;
+    }
+    > :nth-child(3) {
+      animation-delay: 200ms;
+    }
+    > :nth-child(4) {
+      animation-delay: 300ms;
+    }
+  }
 }

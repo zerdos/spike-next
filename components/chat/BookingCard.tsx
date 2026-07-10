@@ -4,14 +4,14 @@ import { track } from "@/lib/analytics";
 
 export function BookingCard({ url }: { url: string }) {
   return (
-    <div className="rounded-xl border border-neutral-300 p-3 text-sm dark:border-neutral-700">
+    <div className="rounded-xl border border-edge-strong bg-surface-raised p-3 text-sm">
       <p className="mb-2">Ready to book a discovery call?</p>
       <a
         href={url}
         target="_blank"
         rel="noopener"
         onClick={() => track("booking_started")}
-        className="inline-flex items-center justify-center rounded-full bg-neutral-900 px-4 py-2 text-xs font-medium text-white dark:bg-white dark:text-neutral-900"
+        className="inline-flex items-center justify-center rounded-full bg-linear-to-r from-accent-bright to-cyan px-4 py-2 text-xs font-semibold text-on-accent"
       >
         Open booking page →
       </a>

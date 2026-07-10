@@ -32,7 +32,7 @@ export function FallbackContactForm() {
 
   return (
     <div className="flex-1 overflow-y-auto p-4">
-      <p className="mb-4 text-sm text-neutral-600 dark:text-neutral-400">
+      <p className="mb-4 text-sm text-ink-muted">
         Chat isn't available right now — send us a message instead and we'll reply by email.
       </p>
       <form onSubmit={handleSubmit} className="space-y-3">
@@ -46,7 +46,7 @@ export function FallbackContactForm() {
             required
             maxLength={200}
             autoComplete="name"
-            className="mt-1 w-full rounded-xl border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700"
+            className="mt-1 w-full rounded-xl border border-edge-strong bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           />
         </div>
         <div>
@@ -60,7 +60,7 @@ export function FallbackContactForm() {
             required
             maxLength={320}
             autoComplete="email"
-            className="mt-1 w-full rounded-xl border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700"
+            className="mt-1 w-full rounded-xl border border-edge-strong bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           />
         </div>
         <div>
@@ -73,7 +73,7 @@ export function FallbackContactForm() {
             required
             maxLength={4000}
             rows={4}
-            className="mt-1 w-full rounded-xl border border-neutral-300 bg-transparent px-3 py-2 text-sm dark:border-neutral-700"
+            className="mt-1 w-full rounded-xl border border-edge-strong bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
           />
         </div>
         <div className="hidden" aria-hidden="true">
@@ -81,14 +81,14 @@ export function FallbackContactForm() {
           <input id="fallback-website" name="website" tabIndex={-1} autoComplete="off" />
         </div>
         {state === "error" ? (
-          <p role="alert" className="text-xs text-red-600 dark:text-red-400">
+          <p role="alert" className="text-xs text-red-400">
             Something went wrong. Please email us directly instead.
           </p>
         ) : null}
         <button
           type="submit"
           disabled={state === "sending"}
-          className="w-full rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-50 dark:bg-white dark:text-neutral-900"
+          className="w-full rounded-full bg-linear-to-r from-accent-bright to-cyan px-4 py-2 text-sm font-semibold text-on-accent disabled:opacity-50"
         >
           {state === "sending" ? "Sending…" : "Send message"}
         </button>

@@ -29,9 +29,9 @@ export default async function AboutPage({
             alt={founder.image.alt}
             width={founder.image.width}
             height={founder.image.height}
-            className="h-40 w-40 rounded-2xl object-cover"
+            className="h-40 w-40 rounded-2xl object-cover ring-1 ring-edge shadow-glow-sm"
           />
-          <div className="space-y-4 text-neutral-600 dark:text-neutral-400">
+          <div className="space-y-4 text-ink-muted">
             {aboutPage.story.map((paragraph) => (
               <p key={paragraph.slice(0, 32)}>{paragraph}</p>
             ))}
@@ -39,25 +39,28 @@ export default async function AboutPage({
           </div>
         </div>
 
-        <section id="contact" className="mt-16 max-w-xl">
+        <section id="contact" className="mt-16 max-w-xl scroll-mt-20">
           <h2 className="text-2xl font-semibold tracking-tight">{contact.title}</h2>
-          <p className="mt-2 text-neutral-600 dark:text-neutral-400">
+          <p className="mt-2 text-ink-muted">
             {contact.sub}{" "}
-            <a href={`mailto:${home.footer.email}`} className="underline underline-offset-4">
+            <a
+              href={`mailto:${home.footer.email}`}
+              className="text-accent-text underline underline-offset-4 motion-safe:transition-colors hover:text-ink"
+            >
               {home.footer.email}
             </a>
           </p>
 
           {sent === "1" ? (
             <p
-              className="mt-6 rounded-xl border border-neutral-300 p-4 text-sm dark:border-neutral-700"
+              className="mt-6 rounded-xl border border-edge-strong bg-surface-raised p-4 text-sm"
               role="status"
             >
               {contact.successMessage}
             </p>
           ) : sent === "0" ? (
             <p
-              className="mt-6 rounded-xl border border-red-300 p-4 text-sm dark:border-red-800"
+              className="mt-6 rounded-xl border border-red-400/60 bg-surface-raised p-4 text-sm"
               role="alert"
             >
               {contact.errorMessage}
@@ -74,7 +77,7 @@ export default async function AboutPage({
                   required
                   maxLength={200}
                   autoComplete="name"
-                  className="mt-1 w-full rounded-xl border border-neutral-300 bg-transparent px-4 py-2 dark:border-neutral-700"
+                  className="mt-1 w-full rounded-xl border border-edge-strong bg-surface-raised px-4 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 />
               </div>
               <div>
@@ -88,7 +91,7 @@ export default async function AboutPage({
                   required
                   maxLength={320}
                   autoComplete="email"
-                  className="mt-1 w-full rounded-xl border border-neutral-300 bg-transparent px-4 py-2 dark:border-neutral-700"
+                  className="mt-1 w-full rounded-xl border border-edge-strong bg-surface-raised px-4 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 />
               </div>
               <div>
@@ -101,7 +104,7 @@ export default async function AboutPage({
                   required
                   maxLength={4000}
                   rows={5}
-                  className="mt-1 w-full rounded-xl border border-neutral-300 bg-transparent px-4 py-2 dark:border-neutral-700"
+                  className="mt-1 w-full rounded-xl border border-edge-strong bg-surface-raised px-4 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
                 />
               </div>
               {/* Honeypot: hidden from humans, bots fill it in. */}

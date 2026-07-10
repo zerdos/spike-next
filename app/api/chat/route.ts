@@ -58,7 +58,7 @@ export async function POST(request: Request) {
       const encoder = new TextEncoder();
       try {
         const generator = runAgentTurn({
-          apiKey: e.ANTHROPIC_API_KEY,
+          apiKey: e.GEMINI_API_KEY,
           model: e.AGENT_MODEL,
           history: state.messages as never[],
           userMessage: message,

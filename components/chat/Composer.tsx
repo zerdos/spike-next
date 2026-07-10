@@ -20,10 +20,7 @@ export function Composer({
   }
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex items-end gap-2 border-t border-neutral-200 p-3 dark:border-neutral-800"
-    >
+    <form onSubmit={handleSubmit} className="flex items-end gap-2 border-t border-edge p-3">
       <label htmlFor="chat-composer" className="sr-only">
         Message Spike
       </label>
@@ -43,12 +40,12 @@ export function Composer({
         disabled={disabled}
         // biome-ignore lint/a11y/noAutofocus: chat opens on explicit user action, focus belongs in the composer
         autoFocus
-        className="max-h-32 flex-1 resize-none rounded-xl border border-neutral-300 bg-transparent px-3 py-2 text-sm disabled:opacity-50 dark:border-neutral-700"
+        className="max-h-32 flex-1 resize-none rounded-xl border border-edge-strong bg-transparent px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:opacity-50"
       />
       <button
         type="submit"
         disabled={disabled || value.trim() === ""}
-        className="rounded-full bg-neutral-900 px-4 py-2 text-sm font-medium text-white disabled:opacity-40 dark:bg-white dark:text-neutral-900"
+        className="rounded-full bg-linear-to-r from-accent-bright to-cyan px-4 py-2 text-sm font-semibold text-on-accent disabled:opacity-40"
       >
         Send
       </button>

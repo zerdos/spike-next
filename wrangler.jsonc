@@ -11,7 +11,7 @@
   "vars": {
     // Kill switch: "false" replaces the chat with the contact form (FR-1.8/FR-1.10).
     "CHAT_ENABLED": "true",
-    "AGENT_MODEL": "claude-opus-4-8",
+    "AGENT_MODEL": "gemini-2.5-flash",
     "MAX_SESSION_TOKENS": "50000",
     "MAX_SESSION_MESSAGES": "30",
     "LEAD_NOTIFY_EMAIL": "zolika84@gmail.com",
@@ -33,6 +33,6 @@
     { "name": "CONTACT_RATE_LIMITER", "namespace_id": "1002", "simple": { "limit": 5, "period": 60 } }
   ],
   "analytics_engine_datasets": [{ "binding": "FUNNEL_EVENTS", "dataset": "spike_digital_funnel" }]
-  // Secrets (set via `wrangler secret put`): ANTHROPIC_API_KEY, RESEND_API_KEY,
+  // Secrets (set via `wrangler secret put`): GEMINI_API_KEY, RESEND_API_KEY,
   // SESSION_SIGNING_SECRET, PII_ENCRYPTION_KEY. Optional var: LEAD_WEBHOOK_URL.
 }

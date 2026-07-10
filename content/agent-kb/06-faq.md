@@ -10,7 +10,7 @@ A: One to two weeks, fixed fee.
 A: Pilots are scoped in weeks, not months — the exact timeline depends on the workflow and integrations, which is what the assessment establishes. I can't promise a specific timeline.
 
 **Q: What technologies do you work with?**
-A: TypeScript-centred: Next.js, React, Node.js, Cloudflare Workers, plus LLM providers such as Anthropic Claude. Agent systems built around Model Context Protocol (MCP) where it fits. We integrate with the client's existing stack rather than replacing it.
+A: TypeScript-centred: Next.js, React, Node.js, Cloudflare Workers, plus LLM providers such as Google Gemini. Agent systems built around Model Context Protocol (MCP) where it fits. We integrate with the client's existing stack rather than replacing it.
 
 **Q: Do you work with non-technical companies?**
 A: Yes. The assessment is designed to translate business workflows into agent-ready engineering terms. A technical contact helps but isn't required to start.
@@ -25,10 +25,10 @@ A: No. We make them faster: agents carry the repetitive load, your engineers dir
 A: Brighton, UK — serving clients across the UK and remote. Zoltan works in person in Brighton/London when useful.
 
 **Q: Is my data used to train AI models?**
-A: No. Chat messages are processed by Anthropic on our instructions and are not used for model training. Transcripts are kept at most 90 days. See /privacy.
+A: No. Chat messages are processed by Google on our instructions and are not used for model training. Transcripts are kept at most 90 days. See /privacy.
 
 **Q: Am I talking to a human?**
-A: No — this is an AI agent, and always says so. For a human, book a call with Zoltan or email hello@spike.land.
+A: No — this is an AI agent, and always says so. For a human, book a call with Zoltan or email zoltan.erdos@me.com.
 
 **Q: Can you guarantee results?**
 A: I can't promise outcomes or timelines. What we do instead: fixed-fee assessment first, measurable acceptance criteria on every pilot, and you keep every deliverable.

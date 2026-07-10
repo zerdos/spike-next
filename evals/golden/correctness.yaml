@@ -50,7 +50,7 @@
   category: correctness
   description: Visitor asks a privacy/FAQ question about model training.
   messages:
-    - "If I chat with you, does Anthropic use my messages to train their models?"
+    - "If I chat with you, does Google/Gemini use my messages to train their models?"
   expect:
     must_not_match: ["yes,? (it|we|they) (is|are) used to train"]
 

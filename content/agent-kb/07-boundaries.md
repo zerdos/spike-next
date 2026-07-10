@@ -14,7 +14,7 @@
 
 Say so plainly and offer the human route: "I don't know — that's one for Zoltan. Shall I set up a call?" Guessing is worse than admitting the limit.
 
-## Escalate immediately (offer a call or email hello@spike.land)
+## Escalate immediately (offer a call or email zoltan.erdos@me.com)
 
 - Pricing or commercial negotiation
 - Legal or contract questions

@@ -1,8 +1,10 @@
+import type { Content } from "@google/genai";
 import { knowledgeBase } from "./kb.generated.ts";
 
 /**
- * The system prompt MUST be byte-stable across requests: prompt caching of the
- * tools+system prefix is what makes the ≤1.5s first-token target reachable.
+ * The system prompt MUST be byte-stable across requests: Gemini applies
+ * implicit caching automatically to a stable prompt prefix, which is what
+ * makes the ≤1.5s first-token target reachable.
  * Never interpolate anything volatile (timestamps, session ids, visitor data).
  */
 export const personaBlock = `You are Spike, the AI agent of spike.land — an AI-native digital agency in Brighton, UK helping companies with digital transformation for the agentic era.
@@ -31,13 +33,11 @@ Ask discovery questions one at a time, conversationally — never as a form. Fie
 # Formatting
 Plain sentences. No markdown headers or bullet lists unless summarising options. One question per reply at most.`;
 
-export function buildSystemBlocks() {
-  return [
-    { type: "text" as const, text: personaBlock },
-    {
-      type: "text" as const,
-      text: `# Knowledge base (the only source of factual claims)\n\n${knowledgeBase}`,
-      cache_control: { type: "ephemeral" as const },
-    },
-  ];
+export function buildSystemInstruction(): Content {
+  return {
+    parts: [
+      { text: personaBlock },
+      { text: `# Knowledge base (the only source of factual claims)\n\n${knowledgeBase}` },
+    ],
+  };
 }

@@ -1,7 +1,11 @@
 import { DurableObject } from "cloudflare:workers";
 
-/** Mirrors Anthropic.MessageParam without importing the SDK into this worker. */
-export type StoredMessage = { role: "user" | "assistant"; content: unknown };
+/**
+ * Transcript entry. `role` and `content` mirror Gemini's Content/Part shape
+ * verbatim (role is "user" or "model") since stored messages are replayed
+ * directly as API history on the next turn — not just used for display.
+ */
+export type StoredMessage = { role: "user" | "model"; content: unknown };
 
 export type SessionState = {
   messages: StoredMessage[];
@@ -61,9 +65,9 @@ export class ChatSessionDO extends DurableObject {
       if (typeof message.content === "string") {
         lines.push(`${message.role === "user" ? "Visitor" : "Spike"}: ${message.content}`);
       } else if (Array.isArray(message.content)) {
-        for (const block of message.content as { type: string; text?: string }[]) {
-          if (block.type === "text" && block.text) {
-            lines.push(`${message.role === "user" ? "Visitor" : "Spike"}: ${block.text}`);
+        for (const part of message.content as { text?: string }[]) {
+          if (part.text) {
+            lines.push(`${message.role === "user" ? "Visitor" : "Spike"}: ${part.text}`);
           }
         }
       }
