@@ -56,7 +56,7 @@ been done by this build — it's the sequence to follow when going live, in orde
 1. **Secrets**: `wrangler secret put` for `GEMINI_API_KEY`, `RESEND_API_KEY`,
    `SESSION_SIGNING_SECRET` (any long random string), `PII_ENCRYPTION_KEY` (32 random bytes,
    base64 — e.g. `openssl rand -base64 32`). Never reuse the placeholder values from `.dev.vars`.
-2. **Cal.com**: confirm the `spike-land/discovery` event type exists and availability is
+2. **Cal.com**: confirm the `zoltan-erdos-bj3ouv` event type exists and availability is
    configured; update the `CAL_LINK` var in `wrangler.jsonc` if the slug differs.
 3. **Deploy**: `npm run deploy` deploys both workers (`spike-chat-state` first, then `spike-digital`)
    to their `*.workers.dev` URLs; smoke-test every route + the chat end-to-end there before touching

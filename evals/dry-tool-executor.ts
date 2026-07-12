@@ -25,7 +25,7 @@ export function createDryToolExecutor(recorded: RecordedToolCall[]): ToolExecuto
       }
       case "book_call": {
         const parsed = bookCallSchema.safeParse(input);
-        const url = buildCalUrl("spike-land/discovery", parsed.success ? parsed.data : {});
+        const url = buildCalUrl("zoltan-erdos-bj3ouv", parsed.success ? parsed.data : {});
         return { modelResult: `Booking link ready: ${url}`, clientData: { bookingUrl: url } };
       }
       case "escalate_to_human": {

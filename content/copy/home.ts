@@ -5,7 +5,7 @@ export const home: HomeCopy = {
     h1: "Digital transformation for the agentic era",
     sub: "We design, ship, and embed agentic AI systems — so your company orchestrates software instead of operating it.",
     primaryCta: { label: "Talk to our agent" },
-    secondaryCta: { label: "Book a call", href: "https://cal.com/spike-land/discovery" },
+    secondaryCta: { label: "Book a call", href: "https://cal.com/zoltan-erdos-bj3ouv" },
   },
 
   shift: {

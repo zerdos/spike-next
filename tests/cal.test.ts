@@ -3,20 +3,20 @@ import { buildCalUrl } from "../lib/cal";
 
 describe("buildCalUrl (FR-2 booking prefill)", () => {
   it("builds a bare link with no prefill", () => {
-    expect(buildCalUrl("spike-land/discovery")).toBe("https://cal.com/spike-land/discovery");
+    expect(buildCalUrl("zoltan-erdos-bj3ouv")).toBe("https://cal.com/zoltan-erdos-bj3ouv");
   });
 
   it("prefills name and email when provided", () => {
     const url = new URL(
-      buildCalUrl("spike-land/discovery", { name: "Ada Lovelace", email: "ada@example.com" }),
+      buildCalUrl("zoltan-erdos-bj3ouv", { name: "Ada Lovelace", email: "ada@example.com" }),
     );
-    expect(url.origin + url.pathname).toBe("https://cal.com/spike-land/discovery");
+    expect(url.origin + url.pathname).toBe("https://cal.com/zoltan-erdos-bj3ouv");
     expect(url.searchParams.get("name")).toBe("Ada Lovelace");
     expect(url.searchParams.get("email")).toBe("ada@example.com");
   });
 
   it("omits params that aren't provided", () => {
-    const url = new URL(buildCalUrl("spike-land/discovery", { name: "Ada Lovelace" }));
+    const url = new URL(buildCalUrl("zoltan-erdos-bj3ouv", { name: "Ada Lovelace" }));
     expect(url.searchParams.has("email")).toBe(false);
   });
 });

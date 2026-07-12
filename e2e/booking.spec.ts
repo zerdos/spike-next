@@ -14,7 +14,7 @@ test("in-chat book_call tool renders a booking card with the prefilled link", as
     const body = [
       "event: token\n",
       'data: {"text":"Sure, here\'s a link to book."}\n\n',
-      'event: tool\ndata: {"name":"book_call","data":{"bookingUrl":"https://cal.com/spike-land/discovery?name=Test"}}\n\n',
+      'event: tool\ndata: {"name":"book_call","data":{"bookingUrl":"https://cal.com/zoltan-erdos-bj3ouv?name=Test"}}\n\n',
       'event: done\ndata: {"usage":{"input":10,"output":5}}\n\n',
     ].join("");
     return route.fulfill({ status: 200, contentType: "text/event-stream", body });
@@ -29,6 +29,6 @@ test("in-chat book_call tool renders a booking card with the prefilled link", as
   await expect(bookingLink).toBeVisible();
   await expect(bookingLink).toHaveAttribute(
     "href",
-    "https://cal.com/spike-land/discovery?name=Test",
+    "https://cal.com/zoltan-erdos-bj3ouv?name=Test",
   );
 });

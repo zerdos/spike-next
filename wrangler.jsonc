@@ -15,7 +15,7 @@
     "MAX_SESSION_TOKENS": "50000",
     "MAX_SESSION_MESSAGES": "30",
     "LEAD_NOTIFY_EMAIL": "zolika84@gmail.com",
-    "CAL_LINK": "spike-land/discovery"
+    "CAL_LINK": "zoltan-erdos-bj3ouv"
   },
   "durable_objects": {
     "bindings": [
