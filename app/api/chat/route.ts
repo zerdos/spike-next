@@ -42,7 +42,16 @@ export async function POST(request: Request) {
   }
 
   const session = getChatSessionStub(e, sessionId);
-  const state = await session.getState();
+  let state: Awaited<ReturnType<typeof session.getState>>;
+  try {
+    state = await session.getState();
+  } catch (error) {
+    console.error("chat session lookup failed", error);
+    return Response.json(
+      { error: "session_unavailable", fallback: "contact_form" },
+      { status: 503 },
+    );
+  }
 
   const maxTokens = Number(e.MAX_SESSION_TOKENS);
   const maxMessages = Number(e.MAX_SESSION_MESSAGES);
